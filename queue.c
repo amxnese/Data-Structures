@@ -41,11 +41,13 @@ int main() {
     enqueue(&queue, 4);
     enqueue(&queue, 5);
     enqueue(&queue, 6);
+    enqueue(&queue, 2);
+    dequeue(&queue);
 
     Queue* temp = queue;
     while (temp != NULL) {
-      printf("data: %d\n", temp->data);
-      temp = temp->next;
+        printf("%d -> ", temp->data); // 5 -> 6 -> 2
+        temp = temp->next;
     }
 
     return 0;
