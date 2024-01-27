@@ -91,6 +91,21 @@ void postorder(Node* node){
   printf("%d -> ", node->data);
 }
 
+void levelOrder(Node* root){
+  if(root == NULL) return;
+  Queue q;
+  enqueue(&q, root);
+  while(!isEmpty(q)){
+    Node* node = front(&q);
+    dequeue(&q);
+    printf("%d", node->data);
+    if(node->left != NULL)
+      enqueue(&q, node->left) ;
+    if( node->right != NULL)
+      enqueue(&q, node->right);
+  }
+}
+
 int main(){
   Node* root = create_node(10);
   insert(root, 15);
