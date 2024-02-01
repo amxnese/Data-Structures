@@ -48,7 +48,7 @@ class Linked_list():
             new_node.next,temp.next= temp.next,new_node
     def Add_to_Empty(self,data):
         if self.is_empty():
-            new_node,self.head = Node(data),new_node
+            self.head = Node(data)
         else:
             print("linked list is not empty")
     def Del_at_Begining(self):
