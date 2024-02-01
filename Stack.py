@@ -8,7 +8,7 @@ class Stack():
         if not data:
           self.head = data
         else:
-          self.head = Node(data);
+          self.head = Node(data)
 
     def push(self,data):
         newNode = Node(data)
