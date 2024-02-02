@@ -1,97 +1,114 @@
 class Node():
 	def __init__(self,data):
 		self.data = data
-		self.ref = None
+		self.next = None
+
 class Linked_list():
     def __init__(self):
         self.head = None
+
     def __str__(self):
-        return "a linked list module created to demonstrate the perception of the data structure"
+        lst = []
+        temp = self.head
+        while temp:
+            lst.append(str(temp.data))
+            temp = temp.next
+        return " ==> ".join(lst)
+
     def __len__(self):
-            x,temp = 0,self.head
-            while temp is not None:
-                temp,x = temp.next,x+1
-            return int(x)
-    def is_empty(self):
-        return self.head is None
-    def display(self):
-        if self.is_empty():
-            print("linked list is empty")
-        else:
-            displayer = self.head
-            while displayer:
-                print(displayer.data,end="  ==>  ")
-                displayer = displayer.next
+            count, temp = 0, self.head
+            while temp:
+                temp, count = temp.next, count+1
+            return count
+            
     def Add_at_Begining(self,data):
-        new_node = Node(data)
-        new_node.next = self.head
-        self.head = new_node
+        newNode = Node(data)
+        newNode.next = self.head
+        self.head = newNode
+
     def Add_at_End(self,data):
-        new_node = Node(data)
+        newNode = Node(data)
         if self.is_empty():
-            self.head = new_node
-        else:
-            temp = self.head
-            while temp.next:
-                temp = temp.next
-            temp.next = new_node
-            del temp
+            self.head = newNode
+            return
+        temp = self.head
+        while temp.next:
+            temp = temp.next
+        temp.next = newNode
+
     def insert(self,data,index):
-        assert index <= len(self), "index out of range"
-        new_node = Node(data)
+        assert index >= 0 and index <= len(self), "index out of range"
         if index == 0:
             self.Add_at_Begining(data)
-        else:
-            count,temp = 1,self.head
-            while temp.next and count != index:
-                temp,count = temp.next,count+1
-            new_node.next,temp.next= temp.next,new_node
+            return
+        newNode = Node(data)
+        temp = self.head
+        count = 1
+        while count != index:
+            temp = temp.next
+            count += 1
+        nxt = temp.next
+        temp.next = newNode
+        newNode.next = nxt
+        
     def Add_to_Empty(self,data):
         if self.is_empty():
             self.head = Node(data)
-        else:
-            print("linked list is not empty")
+            return
+        print("List Not Empty!")
+
     def Del_at_Begining(self):
         if self.is_empty():
-            print("linked list is empty")
-        else:
-            temp = self.head
-            self.head = self.head.next
-            del(temp)
+            print("Empty List!")
+            return
+        self.head = self.head.next
+
     def Del_at_End(self):
         if self.is_empty():
-            print("linked list is empty")
-        elif len(self) == 1:
+            print("Empty List")
+            return
+        if not self.head.next:
             self.head = None
-        else:
-            temp = self.head
-            while temp.next.next is not None:
-                temp = temp.next
-            temp.next = None
+            return
+        temp = self.head
+        while temp.next.next:
+            temp = temp.next
+        temp.next = None
+
     def Del_by_Value(self,value):
         if self.is_empty():
-            return "linked list is empty"
-        elif self.head.data == value:
-            print(f"value ==> ({self.head.data}) has been deleted")
+            print("Empty List!!")
+            return
+        if self.head.data == value:
             self.Del_at_Begining()
+            return
+        temp = self.head
+        while temp.next and temp.next.data != value:
+            temp = temp.next
+        if not temp.next:
+            print("Value Not in List!")
         else:
-            temp = self.head
-            while temp.next:
-                if temp.next.data == value:
-                    break
-                temp = temp.next
-            if temp.next:
-                print(f"value ==> ({temp.next.data}) has been deleted")
-                d = temp.next
-                temp.next = temp.next.next
-                del d
-            else:
-                print(f"value {value} not found")
+            temp.next = temp.next.next
+
+    def is_empty(self):
+        return not self.head
+
+    def display(self):
+        if self.is_empty():
+            print("Empty List")
+            return
+        temp = self.head
+        while temp:
+            print(temp.data,end="  ==>  ")
+            temp = temp.next
+        print("None")
+
     def Reverse(self):
         if self.is_empty():
-            print("linked list is empty")
-        elif not self.head.next:
-            return self.head
+            print("Empty List!")
+            return
+        if not self.head.next:
+            pass
         else:
             prv,cur,nxt = self.head,self.head.next,self.head.next.next
             prv.next = None

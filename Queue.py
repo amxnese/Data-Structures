@@ -7,6 +7,12 @@ class Queue():
     def __init__(self):
         self.head = None
 
+    def __len__(self):
+      temp, num = self.head, 0
+      while temp:
+        temp, num = temp.next, num+1
+      return num
+
     def enqueue(self, data):
         newNode = Node(data)
         if self.is_empty():
@@ -26,12 +32,6 @@ class Queue():
 
     def is_empty(self):
         return(not self.head)
-
-    def size(self):
-      temp, num = self.head, 0
-      while temp:
-        temp, num = temp.next, num+1
-      return num
 
     def peek(self):
         print(self.head.data)
