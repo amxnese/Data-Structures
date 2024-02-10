@@ -14,7 +14,7 @@ class Linked_list():
         while temp:
             lst.append(str(temp.data))
             temp = temp.next
-        return " ==> ".join(lst)
+        return ", ".join(lst)
 
     def __len__(self):
             count, temp = 0, self.head
@@ -130,6 +130,7 @@ class Doubly_Linked_list(Linked_list):
             lst.append(str(temp.data))
             temp = temp.next
         return ", ".join(lst)
+
     def __len__(self):
         num, temp = 0, self.head
         while temp:
@@ -148,6 +149,7 @@ class Doubly_Linked_list(Linked_list):
             print(temp.data, " ==> ", end="")
             temp = temp.next
         print("None")
+
     def Add_at_Begining(self,data):
         newNode = Node(data)
         if self.is_empty():
@@ -351,7 +353,6 @@ class Circul_SLL(Linked_list):
         temp.next = self.head.next
         self.head = self.head.next
 
-
     def Del_at_End(self):
         if self.is_empty():
             print("Empty List!")
@@ -396,3 +397,170 @@ class Circul_SLL(Linked_list):
             cur.next = prv
             self.head = cur
             tail.next = self.head
+
+class Circular_DLL(Doubly_Linked_list):
+    def __str__(self):
+        if self.is_empty():
+            return ''
+        lst = [str(self.head.data)]
+        temp = self.head.next
+        while temp != self.head:
+            lst.append(str(temp.data))
+            temp = temp.next
+        return ", ".join(lst) 
+
+    def __len__(self):
+        if self.is_empty():
+            return 0
+        elif not self.head.next:
+            return 1
+        else:
+            x,temp = 1,self.head.next
+            while temp != self.head:
+                temp,x = temp.next,x+1
+            return int(x)
+
+    def display(self):
+        if self.is_empty():
+            print("Empty List!")
+        else:
+            print(self.head.data,end="  ==>  ")
+            displayer = self.head.next
+            while displayer != self.head:
+                print(displayer.data,end="  ==>  ")
+                displayer = displayer.next
+        print()
+
+    def r_display(self):
+        if self.is_empty():
+            print("Empty List!")
+        elif len(self) == 1:
+            print(self.head.data,end="  ==>  ")
+        else:
+            n = self.head
+            while(n.next != self.head):
+                n = n.next
+            print(n.data,end="  ==>  ")
+            n = n.prv
+            while(n.next != self.head):
+                print(n.data,end="  ==>  ")
+                n = n.prv
+
+    def Add_at_Begining(self, data):
+        newNode = Node(data)
+        if self.is_empty():
+            self.head = newNode
+            self.head.next = self.head
+            self.prv = self.head
+        else:
+            temp = self.head
+            while temp.next != self.head:
+                temp = temp.next
+            temp.next = newNode
+            newNode.prv = temp
+            newNode.next = self.head
+            self.head.prv = newNode
+            self.head = newNode
+
+    def Add_at_End(self,data):
+        if self.is_empty():
+            self.Add_at_Begining(data)
+        else:
+            newNode = Node(data)
+            n = self.head
+            while n.next != self.head:
+                n = n.next
+            n.next = newNode
+            newNode.prv = n
+            newNode.next = self.head
+            self.head.prv = newNode
+
+    def insert(self,data,index):
+        assert index >= 0 and index <= len(self), "index out of range!!"
+        newNode = Node(data)
+        if index == 0:
+            self.Add_at_Begining(data)
+        elif index == len(self):
+            self.Add_at_End(data)
+        else:
+            temp, count = self.head, 1
+            while count != index:
+                temp, count= temp.next, count+1
+            temp1 = temp.next
+            temp.next = newNode
+            newNode.next = temp1
+            temp1.prv = newNode
+            newNode.prv = temp
+
+    def Add_to_Empty(self, data):
+        if self.is_empty():
+            self.Add_at_Begining(data)
+            return
+        print("List Not Empty!")
+
+    def Del_at_Begining(self):
+        if self.is_empty():
+            print("Empty List!")
+        elif self.head == self.head.next:
+            self.head = None
+        else:
+            new_head = self.head.next
+            tail = self.head.prv
+            self.head.prv = None
+            self.head.next = None
+            self.head = new_head
+            tail.next = self.head
+            self.head.prv = tail
+
+    def Del_at_End(self):
+        if self.is_empty():
+            print("Empty List!")
+        elif len(self) == 1:
+            self.head = None
+        else:
+            temp = self.head
+            while temp.next.next != self.head:
+                temp = temp.next
+            tmp = temp.next
+            tmp.prv = None
+            tmp.next = None
+            temp.next = self.head
+            self.head.prv = temp
+
+    def Del_by_Value(self, value):
+        if self.is_empty():
+            return "Empty List!"
+        elif self.head.data == value:
+            print(f"value ==> ({self.head.data}) has been deleted")
+            self.Del_at_Begining()
+        else:
+            temp = self.head
+            while temp.next != self.head and temp.next.data != value:
+                temp = temp.next
+            if temp.next == self.head:
+                raise ValueError(f"{value} Not Found!")
+            else:
+                print(f"value ==> ({temp.next.data}) has been deleted")
+                d = temp.next
+                t = d.next
+                t.prv = temp
+                temp.next = t
+                d.next,d.prv = None,None
+
+    def Reverse(self):
+        if self.is_empty():
+            print("Empty List!")
+        elif self.head.next == self.head:
+            return
+        else:
+            cur = self.head
+            nxt = self.head.next
+            while nxt != self.head:
+                cur.next = cur.prv
+                cur.prv = nxt
+                cur = nxt
+                nxt = nxt.next
+            self.head = cur
+            temp = self.head.next
+            self.head.next = self.head.prv
+            self.head.prv = temp
